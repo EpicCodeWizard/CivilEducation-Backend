@@ -7,12 +7,12 @@ import uuid
 
 app = Flask(__name__, template_folder='', static_folder='')
 
-@crossdomain(origin="*")
+@crossdomain(origin="localhost")
 @app.route("/posts/all", methods=["GET"])
 def all_posts():
   return jsonify(json.loads(db.get_raw("posts")))
 
-@crossdomain(origin="*")
+@crossdomain(origin="localhost")
 @app.route("/posts/add", methods=["POST"])
 def add_post():
   data = request.json
@@ -23,7 +23,7 @@ def add_post():
   db["posts"].append(data)
   return ""
 
-@crossdomain(origin="*")
+@crossdomain(origin="localhost")
 @app.route("/posts/comments/<post_id>", methods=["POST"])
 def add_comment(post_id):
   for ind, post in enumerate(json.loads(db.get_raw("posts"))):
@@ -31,14 +31,14 @@ def add_comment(post_id):
       db["posts"][ind]["comments"].append(request.json)
   return ""
 
-@crossdomain(origin="*")
+@crossdomain(origin="localhost")
 @app.route("/blogs/all", methods=["GET"])
 def all_blogs():
   blogs = json.loads(db.get_raw("blogs"))
   blogs.sort(key=lambda info: info["rating"], reverse=True)
   return jsonify(blogs)
 
-@crossdomain(origin="*")
+@crossdomain(origin="localhost")
 @app.route("/blogs/add", methods=["POST"])
 def add_blogs():
   data = request.json
@@ -49,7 +49,7 @@ def add_blogs():
   db["blogs"].append(data)
   return ""
 
-@crossdomain(origin="*")
+@crossdomain(origin="localhost")
 @app.route("/blogs/rate/<blog_id>", methods=["POST"])
 def add_rate(blog_id):
   for ind, blog in enumerate(json.loads(db.get_raw("blogs"))):
